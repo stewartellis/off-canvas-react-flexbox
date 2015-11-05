@@ -7,4 +7,5 @@ Some great off canvas layouts have been done by other folks out there, particula
 - built with flexbox & react
 - built without jQuery
 - should not rely on css selectors that target adjacent elements - the burger should be able to go anywhere
-- should default to visible when for desktop and hidden on mobile
+- should default to visible on desktop and hidden on mobile
+- menu links only hide the sidebar on mobile, otherwise sidebar stay visible on desktop
