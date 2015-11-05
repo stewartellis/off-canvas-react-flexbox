@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Off Canvas Layout built with React and Flexbox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    
+    <div id="render-target">
+      <p>
+        If you can see this, React is not working right.
+        If you checked out the source from GitHub make sure to run <code>grunt</code>.
+      </p>
+    </div>
+
+<script src="react.js"></script>
+<script src="react-dom.js"></script>
+<script src="classnames.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+<script type="text/babel">      
+var MainLayout = React.createClass({
+  getInitialState() {
+    if(window.innerWidth> 750) {
+      return {sidebarIsOpen: true}
+    } else {
+      return {sidebarIsOpen: false}
+    }
+  },
+  onSidebarIsOpenChange(sidebarIsOpen) {
+    this.setState({sidebarIsOpen: sidebarIsOpen});
+  },
+  render() {
+    return (
+      <div className="ui-container">
+        <TopBar sidebarIsOpen={this.state.sidebarIsOpen} onSidebarIsOpenChange={this.onSidebarIsOpenChange} />
+        <div className='layout-flex-container'>
+          <SideBar sidebarIsOpen={this.state.sidebarIsOpen}  onSidebarIsOpenChange={this.onSidebarIsOpenChange} />
+          <Content sidebarIsOpen={this.state.sidebarIsOpen}  content={this.props.content}/>
+        </div>
+      </div>
+    )
+  }
+});
+
+var TopBar = React.createClass({
+  handleLogout() {
+    Meteor.logout();
+  },
+  handleToggle() {
+    this.props.onSidebarIsOpenChange(!this.props.sidebarIsOpen);
+  },
+  render() {    
+    return (
+      <div className="topbar">
+        <div className='burger'>
+          <a onClick={this.handleToggle}><span className="lnr lnr-menu"></span></a>
+        </div>        
+      </div>
+    )
+  }
+});
+
+var SideBar = React.createClass({
+  handleToggle() {
+    if(window.innerWidth< 750) {
+      this.props.onSidebarIsOpenChange(!this.props.sidebarIsOpen);
+    }
+  },
+  render() {
+    return (
+      <div className='sidebar'>
+        <div className='title'>
+          <a href="/">
+          <img src="danger-pork.png"/>
+          DANGER SWINE INC.
+          </a>
+        </div>
+        <ul className='nav'>
+          <li><a href="#" onClick={this.handleToggle}>Ham Hocs</a></li>
+          <li><a href="#" onClick={this.handleToggle}>Bacon</a></li>
+          <li><a href="#" onClick={this.handleToggle}>Sausages</a></li>
+        </ul>
+      </div>
+    )
+  }
+});
+
+var Content = React.createClass({
+  handleToggle() {
+    this.props.onSidebarIsOpenChange(!this.props.sidebarIsOpen);
+  },
+  render() {
+    let contentPane = classNames({
+          'content': true,
+          'sidebarIsOpen': this.props.sidebarIsOpen
+        });
+    return (
+      <div className={contentPane}>
+        <h1>Off Canvas Layout with React & Flexbox</h1>
+        <p>Bacon ipsum dolor amet bresaola tongue spare ribs kevin ball tip fatback brisket pork chop picanha, tail kielbasa pork meatball shank prosciutto. Capicola pork belly pork loin spare ribs landjaeger pig pork chop jowl chuck beef ribs sirloin flank. Jerky kielbasa strip steak, rump salami andouille shankle doner tongue turkey beef ribs pastrami fatback tri-tip tail. Spare ribs meatball fatback doner t-bone tenderloin frankfurter andouille. Pork belly turducken jowl, bresaola cow pig ham sausage picanha alcatra shankle chicken.</p>
+
+<p>Alcatra kevin salami chuck short ribs, capicola boudin. Pork loin doner ham, shank alcatra ground round short ribs pastrami pancetta. T-bone tongue ground round, meatloaf beef kielbasa pork loin pig shank spare ribs. Tongue beef pig, sausage doner t-bone leberkas shankle pastrami ball tip tail venison andouille frankfurter.</p>
+
+<p>Pork chop ball tip shank chuck, cow frankfurter beef pastrami drumstick landjaeger tongue meatball ham hock short loin. Flank strip steak picanha, cupim kevin prosciutto bacon ball tip sausage bresaola meatball venison cow meatloaf. Cow salami chuck biltong, shoulder filet mignon cupim. Kevin alcatra ham cupim, boudin bresaola andouille jowl pork salami. Shoulder fatback porchetta, pork loin pork hamburger andouille shank frankfurter prosciutto. Shoulder turkey biltong strip steak cow capicola fatback ball tip meatloaf ham hock corned beef venison landjaeger salami. Pork chop chuck boudin cow tri-tip.</p>
+
+<p>Pork short ribs fatback ham tri-tip shank frankfurter corned beef swine biltong chuck picanha t-bone shankle jerky. Flank shankle venison pork loin strip steak, ground round meatloaf frankfurter. Hamburger cupim boudin short ribs pork shank. Bresaola ground round venison biltong shoulder. Andouille tenderloin kevin, prosciutto flank bresaola pig pork. Pork belly tenderloin kevin ball tip.</p>
+      </div>
+    )
+  }
+});
+
+var start = new Date().getTime();
+setInterval(function() {
+  ReactDOM.render(
+    <MainLayout elapsed={new Date().getTime() - start} />,
+    document.getElementById('render-target')
+  );
+}, 50);
+</script>
+<script type="text/babel">
+      // var ExampleApplication = React.createClass({
+      //   render: function() {
+      //     var elapsed = Math.round(this.props.elapsed  / 100);
+      //     var seconds = elapsed / 10 + (elapsed % 10 ? '' : '.0' );
+      //     var message =
+      //       'React has been successfully running for ' + seconds + ' seconds.';
+
+      //     return <p>{message}</p>;
+      //   }
+      // });
+      // var start = new Date().getTime();
+      // setInterval(function() {
+      //   ReactDOM.render(
+      //     <ExampleApplication elapsed={new Date().getTime() - start} />,
+      //     document.getElementById('container')
+      //   );
+      // }, 50);
+</script>
+  </body>
+</html>
